@@ -1662,13 +1662,12 @@ public class U {
 
     public static Context wrapContext(Context context) {
         SharedPreferences pref = getSharedPreferences(context);
-        String size = pref.getString("taskbar_size", "default");
+        int size = pref.getInt("taskbar_size", 100);
+        if (size < 10) size = 10;
         
         Configuration config = new Configuration(context.getResources().getConfiguration());
-        if ("small".equals(size)) {
-            config.densityDpi = (int)(config.densityDpi * 0.75f);
-        } else if ("large".equals(size)) {
-            config.densityDpi = (int)(config.densityDpi * 1.25f);
+        if (size != 100) {
+            config.densityDpi = (int)(config.densityDpi * (size / 100f));
         }
         Context newContext = context.createConfigurationContext(config);
 

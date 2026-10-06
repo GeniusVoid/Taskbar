@@ -508,4 +508,5 @@
     </string-array>
 
     <string name="tb_pref_title_taskbar_size">Taskbar Size</string>
+    <string name="tb_pref_title_taskbar_size">Taskbar Size (%)</string>
 </resources>

@@ -15,20 +15,10 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-
-        android:defaultValue="default"
-
-        android:entries="@array/tb_pref_taskbar_size_list"
-
-        android:entryValues="@array/tb_pref_taskbar_size_list_values"
-
+    <SeekBarPreference
+        android:defaultValue="100"
         android:key="taskbar_size"
-
-        android:negativeButtonText="@null"
-
-        android:positiveButtonText="@null"
-
+        android:max="200"
         android:title="@string/tb_pref_title_taskbar_size"/>
 
     <ListPreference
