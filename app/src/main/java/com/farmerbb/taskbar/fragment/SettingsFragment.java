@@ -130,7 +130,11 @@ public abstract class SettingsFragment extends PreferenceFragment implements Pre
             } else if(!(preference instanceof CheckBoxPreference)) {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
-                preference.setSummary(stringValue);
+                if (preference.getKey() != null && preference.getKey().equals("taskbar_size")) {
+                    preference.setSummary(stringValue + "%");
+                } else {
+                    preference.setSummary(stringValue);
+                }
             }
 
             if(finishedLoadingPrefs) {
@@ -202,9 +206,15 @@ public abstract class SettingsFragment extends PreferenceFragment implements Pre
 
         // Trigger the listener immediately with the preference's
         // current value.
-        if(!(preference instanceof CheckBoxPreference))
-            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                    U.getSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+        if(!(preference instanceof CheckBoxPreference)) {
+            Object value;
+            try {
+                value = U.getSharedPreferences(preference.getContext()).getString(preference.getKey(), "");
+            } catch (ClassCastException e) {
+                value = U.getSharedPreferences(preference.getContext()).getInt(preference.getKey(), 100);
+            }
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
+        }
     }
 
     @Override

@@ -70,6 +70,7 @@ public class AppearanceFragment extends SettingsFragment {
         }
 
         bindPreferenceSummaryToValue(findPreference(PREF_THEME));
+        bindPreferenceSummaryToValue(findPreference("taskbar_size"));
         bindPreferenceSummaryToValue(findPreference(PREF_INVISIBLE_BUTTON));
         bindPreferenceSummaryToValue(findPreference(PREF_START_BUTTON_IMAGE));
         bindPreferenceSummaryToValue(findPreference(PREF_ICON_PACK_USE_MASK));
