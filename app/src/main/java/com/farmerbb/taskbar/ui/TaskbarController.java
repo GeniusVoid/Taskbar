@@ -1371,47 +1371,7 @@ public class TaskbarController extends UIController {
     }
 
     private void hideTaskbar(boolean clearVariables) {
-        if(clearVariables) {
-            taskbarShownTemporarily = false;
-            taskbarHiddenTemporarily = false;
-        }
-
-        if(startButton.getVisibility() == View.VISIBLE) {
-            startButton.setVisibility(View.GONE);
-            space.setVisibility(View.GONE);
-
-            if(dashboardEnabled)
-                dashboardButton.setVisibility(View.GONE);
-
-            if(navbarButtonsEnabled)
-                navbarButtons.setVisibility(View.GONE);
-
-            if(isShowingRecents)
-                scrollView.setVisibility(View.GONE);
-
-            if(sysTrayEnabled)
-                sysTrayParentLayout.setVisibility(View.GONE);
-
-            shouldRefreshRecents = false;
-            if(thread != null) thread.interrupt();
-
-            SharedPreferences pref = U.getSharedPreferences(context);
-            pref.edit().putBoolean(PREF_COLLAPSED, false).apply();
-
-            updateButton(true);
-
-            if(clearVariables) {
-                U.sendBroadcast(context, ACTION_HIDE_START_MENU);
-                U.sendBroadcast(context, ACTION_HIDE_DASHBOARD);
-            }
-
-            if(matchParent) {
-                matchParent = false;
-                U.newHandler().post(updateParamsRunnable);
-            }
-
-            U.newHandler().post(() -> U.sendBroadcast(context, ACTION_HIDE_START_MENU_SPACE));
-        }
+        // The user requested the taskbar to never hide.
     }
 
     private void tempShowTaskbar() {
@@ -1541,11 +1501,7 @@ public class TaskbarController extends UIController {
     }
 
     private void updateButton(boolean isCollapsed) {
-        SharedPreferences pref = U.getSharedPreferences(context);
-        boolean hide = pref.getBoolean(PREF_INVISIBLE_BUTTON, false);
-
-        if(button != null) button.setText(context.getString(isCollapsed ? R.string.tb_right_arrow : R.string.tb_left_arrow));
-        if(layout != null) layout.setAlpha(isCollapsed && hide ? 0 : 1);
+        if(button != null) button.setVisibility(View.GONE);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

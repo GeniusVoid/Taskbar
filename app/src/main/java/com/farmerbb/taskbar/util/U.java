@@ -1499,20 +1499,7 @@ public class U {
     }
 
     public static boolean shouldCollapse(Context context, boolean pendingAppLaunch) {
-        SharedPreferences pref = getSharedPreferences(context);
-        if(pref.getBoolean(PREF_HIDE_TASKBAR, true)) {
-            if(!isFreeformModeEnabled(context)
-                    || isOverridingFreeformHack(context, false))
-                return !LauncherHelper.getInstance().isOnHomeScreen(context);
-            else {
-                FreeformHackHelper helper = FreeformHackHelper.getInstance();
-                if(pendingAppLaunch)
-                    return !helper.isFreeformHackActive();
-                else
-                    return !helper.isInFreeformWorkspace();
-            }
-        } else
-            return false;
+        return false;
     }
 
     public static boolean isOverridingFreeformHack(Context context) {
