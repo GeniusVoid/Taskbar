@@ -677,7 +677,7 @@ public class StartMenuController extends UIController {
                 searchView.setOnQueryTextFocusChangeListener((view, b) -> {
                     if(!hasHardwareKeyboard) {
                         ViewGroup.LayoutParams params1 = startMenu.getLayoutParams();
-                        params1.height = context.getResources().getDimensionPixelSize(
+                        params1.height = U.wrapContext(context).getResources().getDimensionPixelSize(
                                 b && isImeFixDisabled()
                                         ? R.dimen.tb_start_menu_height_half
                                         : R.dimen.tb_start_menu_height);

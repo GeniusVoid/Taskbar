@@ -741,8 +741,8 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
         if(desktopIcons == null) return;
 
         boolean taskbarIsVertical = TaskbarPosition.isVertical(this);
-        int iconSize = getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
-        int desktopIconSize = getResources().getDimensionPixelSize(R.dimen.tb_start_menu_grid_width);
+        int iconSize = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+        int desktopIconSize = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_start_menu_grid_width);
 
         int columns = (layout.getWidth() - (taskbarIsVertical ? iconSize : 0)) / desktopIconSize;
         int rows = (layout.getHeight() - (!taskbarIsVertical ? iconSize : 0)) / desktopIconSize;
@@ -947,7 +947,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
         if(desktopIcons == null || fab == null) return;
 
         String position = TaskbarPosition.getTaskbarPosition(this);
-        int iconSize = getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+        int iconSize = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
 
         int left = 0;
         int top = 0;
@@ -971,7 +971,7 @@ public class HomeActivityDelegate extends AppCompatActivity implements UIHost {
         params.setMargins(left, top, right, bottom);
         desktopIcons.setLayoutParams(params);
 
-        int fabMargin = getResources().getDimensionPixelSize(R.dimen.tb_desktop_icon_fab_margin);
+        int fabMargin = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_desktop_icon_fab_margin);
         left += fabMargin;
         top += fabMargin;
         right += fabMargin;

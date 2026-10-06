@@ -276,7 +276,7 @@ public class DashboardController extends UIController {
 
     @VisibleForTesting
     void updatePaddingSize(Context context, LinearLayout layout, String position) {
-        int paddingSize = context.getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+        int paddingSize = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
 
         switch(position) {
             case POSITION_TOP_VERTICAL_LEFT:

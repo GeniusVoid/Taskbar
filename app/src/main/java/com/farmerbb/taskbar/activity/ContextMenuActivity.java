@@ -125,15 +125,15 @@ public class ContextMenuActivity extends PreferenceActivity implements Preferenc
         int statusBarHeight = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if(resourceId > 0)
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            statusBarHeight = U.wrapContext(this).getResources().getDimensionPixelSize(resourceId);
 
-        int contextMenuWidth = getResources().getDimensionPixelSize(R.dimen.tb_context_menu_width);
+        int contextMenuWidth = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_context_menu_width);
 
         if(showStartMenu || desktopIcon != null) {
             int x = args.getInt("x", 0);
             int y = args.getInt("y", 0);
             int offsetResourceId = isOverflowMenu ? R.dimen.tb_context_menu_offset_overflow : R.dimen.tb_context_menu_offset;
-            int offset = getResources().getDimensionPixelSize(offsetResourceId);
+            int offset = U.wrapContext(this).getResources().getDimensionPixelSize(offsetResourceId);
 
             switch(TaskbarPosition.getTaskbarPosition(this)) {
                 case POSITION_BOTTOM_LEFT:
@@ -166,7 +166,7 @@ public class ContextMenuActivity extends PreferenceActivity implements Preferenc
 
             int x = args.getInt("x", display.width);
             int y = args.getInt("y", display.height);
-            int offset = getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+            int offset = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
 
             switch(TaskbarPosition.getTaskbarPosition(this)) {
                 case POSITION_BOTTOM_LEFT:
@@ -215,7 +215,7 @@ public class ContextMenuActivity extends PreferenceActivity implements Preferenc
                 params.x = params.x - contextMenuWidth + offset;
         }
 
-        params.width = getResources().getDimensionPixelSize(R.dimen.tb_context_menu_width);
+        params.width = U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_context_menu_width);
         params.dimAmount = 0;
 
         if(U.isChromeOs(this)
@@ -224,7 +224,7 @@ public class ContextMenuActivity extends PreferenceActivity implements Preferenc
 
             if(U.getChromeOsContextMenuFix(this)
                     && !pref.getBoolean(PREF_HAS_CAPTION, false))
-                params.y = params.y - getResources().getDimensionPixelSize(R.dimen.tb_caption_offset);
+                params.y = params.y - U.wrapContext(this).getResources().getDimensionPixelSize(R.dimen.tb_caption_offset);
         }
 
         getWindow().setAttributes(params);

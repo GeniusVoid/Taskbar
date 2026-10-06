@@ -452,7 +452,7 @@ public class TaskbarController extends UIController {
         switch(pref.getString(PREF_START_BUTTON_IMAGE, U.getDefaultStartButtonImage(context))) {
             case PREF_START_BUTTON_IMAGE_DEFAULT:
                 startButton.setImageDrawable(allAppsIcon);
-                padding = context.getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding);
+                padding = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding);
                 break;
             case PREF_START_BUTTON_IMAGE_APP_LOGO:
                 Drawable drawable;
@@ -468,11 +468,11 @@ public class TaskbarController extends UIController {
                 }
 
                 startButton.setImageDrawable(drawable);
-                padding = context.getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding_alt);
+                padding = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding_alt);
                 break;
             case PREF_START_BUTTON_IMAGE_CUSTOM:
                 U.applyCustomImage(context, "custom_image", startButton, allAppsIcon);
-                padding = context.getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding);
+                padding = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_app_drawer_icon_padding);
                 break;
         }
 
@@ -654,11 +654,11 @@ public class TaskbarController extends UIController {
 
     @VisibleForTesting
     void drawSysTray(Context context, int layoutId, LinearLayout layout) {
-        sysTrayLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.tb_system_tray, null);
+        sysTrayLayout = (LinearLayout) LayoutInflater.from(U.wrapContext(context)).inflate(R.layout.tb_system_tray, null);
 
         FrameLayout.LayoutParams sysTrayParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
-                context.getResources().getDimensionPixelSize(R.dimen.tb_icon_size)
+                U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_icon_size)
         );
 
         if(layoutId == R.layout.tb_taskbar_right) {
@@ -1004,7 +1004,7 @@ public class TaskbarController extends UIController {
                                    boolean fullLength,
                                    int numOfEntries) {
         DisplayInfo display = U.getDisplayInfo(context, true);
-        int recentsSize = context.getResources().getDimensionPixelSize(R.dimen.tb_icon_size) * numOfEntries;
+        int recentsSize = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_icon_size) * numOfEntries;
         float maxRecentsSize = fullLength ? Float.MAX_VALUE : recentsSize;
         int maxScreenSize;
 
@@ -1021,7 +1021,7 @@ public class TaskbarController extends UIController {
                     - baseTotal);
 
             params.height = (int) Math.min(maxRecentsSize, maxScreenSize)
-                    + context.getResources().getDimensionPixelSize(R.dimen.tb_divider_size);
+                    + U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_divider_size);
 
             if(fullLength) {
                 try {
@@ -1061,7 +1061,7 @@ public class TaskbarController extends UIController {
             maxScreenSize = Math.max(0, display.width - baseTotal);
 
             params.width = (int) Math.min(maxRecentsSize, maxScreenSize)
-                    + context.getResources().getDimensionPixelSize(R.dimen.tb_divider_size);
+                    + U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_divider_size);
 
             if(fullLength) {
                 try {

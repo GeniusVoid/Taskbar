@@ -522,7 +522,7 @@ public class U {
         int bottom = display.height;
 
         int iconSize = isOverridingFreeformHack(context) && !LauncherHelper.getInstance().isOnHomeScreen(context)
-                ? 0 : context.getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+                ? 0 : U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
 
         if(TaskbarPosition.isVerticalLeft(position))
             left = left + iconSize;
@@ -561,9 +561,9 @@ public class U {
         int heightDimen = isLandscape ? R.dimen.tb_phone_size_width : R.dimen.tb_phone_size_height;
 
         int width1 = display.width / 2;
-        int width2 = context.getResources().getDimensionPixelSize(widthDimen) / 2;
+        int width2 = U.wrapContext(context).getResources().getDimensionPixelSize(widthDimen) / 2;
         int height1 = display.height / 2;
-        int height2 = context.getResources().getDimensionPixelSize(heightDimen) / 2;
+        int height2 = U.wrapContext(context).getResources().getDimensionPixelSize(heightDimen) / 2;
 
         return getActivityOptionsBundle(context, type, view,
                 width1 - width2,
@@ -645,7 +645,7 @@ public class U {
         int right = display.width;
         int bottom = display.height;
 
-        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
+        int iconSize = U.wrapContext(context).getResources().getDimensionPixelSize(R.dimen.tb_icon_size);
 
         if(TaskbarPosition.isVerticalLeft(position))
             right = iconSize;
@@ -729,7 +729,7 @@ public class U {
                 ? (display.height - getStatusBarHeight(context)) / density
                 : display.width / density;
 
-        float iconSize = context.getResources().getDimension(R.dimen.tb_icon_size) / density;
+        float iconSize = U.wrapContext(context).getResources().getDimension(R.dimen.tb_icon_size) / density;
 
         int userMaxNumOfColumns = Integer.parseInt(pref.getString(PREF_MAX_NUM_OF_RECENTS, "10"));
 
@@ -769,7 +769,7 @@ public class U {
         int value = 0;
         int resourceId = context.getResources().getIdentifier(id, "dimen", "android");
         if(resourceId > 0)
-            value = context.getResources().getDimensionPixelSize(resourceId);
+            value = U.wrapContext(context).getResources().getDimensionPixelSize(resourceId);
 
         return value;
     }
@@ -1181,33 +1181,33 @@ public class U {
 
     public static float getBaseTaskbarSizeStart(Context context) {
         SharedPreferences pref = getSharedPreferences(context);
-        float baseTaskbarSize = context.getResources().getDimension(R.dimen.tb_base_size_start_plus_divider);
+        float baseTaskbarSize = U.wrapContext(context).getResources().getDimension(R.dimen.tb_base_size_start_plus_divider);
 
         baseTaskbarSize += pref.getBoolean(PREF_ALT_BUTTON_CONFIG, false)
-                ? context.getResources().getDimension(R.dimen.tb_base_size_collapse_button) : 0;
+                ? U.wrapContext(context).getResources().getDimension(R.dimen.tb_base_size_collapse_button) : 0;
 
         boolean navbarButtonsEnabled = false;
 
         if(getBooleanPrefWithDefault(context, PREF_DASHBOARD))
-            baseTaskbarSize += context.getResources().getDimension(R.dimen.tb_dashboard_button_size);
+            baseTaskbarSize += U.wrapContext(context).getResources().getDimension(R.dimen.tb_dashboard_button_size);
 
         if(pref.getBoolean(PREF_BUTTON_BACK, false)) {
             navbarButtonsEnabled = true;
-            baseTaskbarSize += context.getResources().getDimension(R.dimen.tb_icon_size);
+            baseTaskbarSize += U.wrapContext(context).getResources().getDimension(R.dimen.tb_icon_size);
         }
 
         if(pref.getBoolean(PREF_BUTTON_HOME, false)) {
             navbarButtonsEnabled = true;
-            baseTaskbarSize += context.getResources().getDimension(R.dimen.tb_icon_size);
+            baseTaskbarSize += U.wrapContext(context).getResources().getDimension(R.dimen.tb_icon_size);
         }
 
         if(pref.getBoolean(PREF_BUTTON_RECENTS, false)) {
             navbarButtonsEnabled = true;
-            baseTaskbarSize += context.getResources().getDimension(R.dimen.tb_icon_size);
+            baseTaskbarSize += U.wrapContext(context).getResources().getDimension(R.dimen.tb_icon_size);
         }
 
         if(navbarButtonsEnabled)
-            baseTaskbarSize += context.getResources().getDimension(R.dimen.tb_navbar_buttons_margin);
+            baseTaskbarSize += U.wrapContext(context).getResources().getDimension(R.dimen.tb_navbar_buttons_margin);
 
         return baseTaskbarSize;
     }
@@ -1215,15 +1215,15 @@ public class U {
     public static float getBaseTaskbarSizeEnd(Context context, Map<Integer, Boolean> sysTrayIconStates) {
         SharedPreferences pref = getSharedPreferences(context);
         float baseTaskbarSize = pref.getBoolean(PREF_ALT_BUTTON_CONFIG, false)
-                ? 0 : context.getResources().getDimension(R.dimen.tb_base_size_collapse_button);
+                ? 0 : U.wrapContext(context).getResources().getDimension(R.dimen.tb_base_size_collapse_button);
 
         if(isSystemTrayEnabled(context)) {
-            float sysTraySize = context.getResources().getDimension(R.dimen.tb_systray_size);
+            float sysTraySize = U.wrapContext(context).getResources().getDimension(R.dimen.tb_systray_size);
 
             if(sysTrayIconStates != null) {
                 for(Integer key : sysTrayIconStates.keySet()) {
                     if(!sysTrayIconStates.get(key)) {
-                        sysTraySize -= context.getResources().getDimension(key == R.id.notification_count
+                        sysTraySize -= U.wrapContext(context).getResources().getDimension(key == R.id.notification_count
                                 ? R.dimen.tb_systray_icon_size_notifications : R.dimen.tb_systray_icon_size);
                     }
                 }
@@ -1661,13 +1661,24 @@ public class U {
     }
 
     public static Context wrapContext(Context context) {
+        SharedPreferences pref = getSharedPreferences(context);
+        String size = pref.getString("taskbar_size", "default");
+        
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        if ("small".equals(size)) {
+            config.densityDpi = (int)(config.densityDpi * 0.75f);
+        } else if ("large".equals(size)) {
+            config.densityDpi = (int)(config.densityDpi * 1.25f);
+        }
+        Context newContext = context.createConfigurationContext(config);
+
         int theme;
         if(isDarkTheme(context))
             theme = R.style.Taskbar_Dark;
         else
             theme = R.style.Taskbar;
 
-        return new ContextThemeWrapper(context, theme);
+        return new ContextThemeWrapper(newContext, theme);
     }
 
     public static boolean isPlayStoreRelease(Context context) {
